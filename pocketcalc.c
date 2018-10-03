@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-void GetOperands(double *firstOperand, double* secondOperand);
+void GetOperationType(int* type_Of_Operation);
+void GetOperands(double* firstOperand, double* secondOperand);
 void CalculateResults(double firstOperand, double secondOperand, int type_Of_Operation, bool breakCondition);
+
 
 int  main(int argc, char const *argv[]) {
 
@@ -12,18 +14,41 @@ int  main(int argc, char const *argv[]) {
   double secondOperand;
 
 
-  printf("Pocketcalculator!\n");
+  printf("Pocketcalculator\n");
   printf("=================\n");
   while (breakCondition == false) {
-    printf("Select Add(1), Subtract(2), Multiply(3), Divide(4) or stop(-1): ");
-    scanf("%d", &type_Of_Operation);
-    GetOperands(&firstOperand, &secondOperand);
-    CalculateResults(firstOperand, secondOperand, type_Of_Operation, breakCondition);
 
+    GetOperationType(&type_Of_Operation);
+
+    if (type_Of_Operation == -1) {
+      breakCondition = true;
+    }
+    else if(type_Of_Operation <=4 && type_Of_Operation > 0){
+      GetOperands(&firstOperand, &secondOperand);
+      if (type_Of_Operation == 4 && secondOperand == 0) {
+        printf("Divided by 0\n");
+      }
+      else{
+        CalculateResults(firstOperand, secondOperand, type_Of_Operation, breakCondition);
+      }
+    }
+
+    else {
+      printf("Input not allowed, please try again\n");
+    }
   }
 
-
   return 0;
+}
+void GetOperationType(int* type_Of_Operation) {
+  printf("Add(1)\n");
+  printf("Subtract(2)\n");
+  printf("Multiply(3)\n");
+  printf("Divide(4)\n");
+  printf("Stop Program(-1)\n");
+  printf("Enter your choice: ");
+  scanf("%d", type_Of_Operation);
+
 }
 
 void GetOperands (double* firstOperand, double* secondOperand) {
@@ -49,12 +74,7 @@ void CalculateResults(double firstOperand, double secondOperand, int type_Of_Ope
   else if (type_Of_Operation == 4) {
     result = firstOperand / secondOperand;
   }
-  else if (type_Of_Operation == -1) {
-     breakCondition = true;
-  }
-  else {
-    printf("Input not allowed, please try again\n");
-  }
+
   printf("\nResult: %lf\n\n", result);
 
 
